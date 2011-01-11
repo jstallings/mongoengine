@@ -1619,7 +1619,25 @@ class QuerySetTest(unittest.TestCase):
         self.assertEqual(len(list(posts())), 1)
 
         Post.drop_collection()
+        
+    def test_call_with_slice_in_middle(self):
+        """ Ensure that refiltering works after slicing in middle
+        """
 
+        class Post(Document):
+            title = StringField()
+            
+        Post.drop_collection()
+        
+        for i in range(0,10):
+            post = Post(title="Post %d" % i)
+            post.save()
+            
+        posts = Post.objects.all()[4:6]
+        self.assertEqual(len(list(posts())),2)
+        
+        Post.drop_collection()
+        
     def test_order_then_filter(self):
         """Ensure that ordering still works after filtering.
         """

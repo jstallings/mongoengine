@@ -831,8 +831,10 @@ class QuerySet(object):
         # Slice provided
         if isinstance(key, slice):
             try:
+                stop = key.stop or 0
+                start  = key.start or 0
                 self._cursor_obj = self._cursor[key]
-                self._skip, self._limit = key.start, key.stop
+                self._skip, self._limit = key.start, stop - start if key.stop else key.stop
             except IndexError, err:
                 # PyMongo raises an error if key.start == key.stop, catch it,
                 # bin it, kill it. 
