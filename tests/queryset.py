@@ -1452,6 +1452,8 @@ class QuerySetTest(unittest.TestCase):
         class Test(Document):
             testdict = DictField()
 
+        Test.drop_collection()
+        
         t = Test(testdict={'f': 'Value'})
         t.save()
 
